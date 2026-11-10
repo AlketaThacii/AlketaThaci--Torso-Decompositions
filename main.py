@@ -14,9 +14,19 @@ def lexo_grafin(rruga):
 
     return numri_nyjeve, brinjet
 
+def krijo_fqinjet(numri_nyjeve, brinjet):
+    fqinjet = [set() for _ in range(numri_nyjeve)]
+
+    for nyja1, nyja2 in brinjet:
+        fqinjet[nyja1].add(nyja2)
+        fqinjet[nyja2].add(nyja1)
+
+    return fqinjet
 
 numri_nyjeve, brinjet = lexo_grafin("data/small.gr")
+fqinjet = krijo_fqinjet(numri_nyjeve, brinjet)
 
 print("Numri i nyjeve:", numri_nyjeve)
 print("Numri i brinjëve:", len(brinjet))
 print("Tri brinjët e para:", brinjet[:3])
+print("Fqinjët e nyjës 0:", sorted(fqinjet[0]))
