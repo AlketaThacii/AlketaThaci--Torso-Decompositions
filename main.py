@@ -23,6 +23,24 @@ def krijo_fqinjet(numri_nyjeve, brinjet):
 
     return fqinjet
 
+def elimino_nyjen(fqinjet, nyja):
+    fqinjte_e_nyjes = list(fqinjet[nyja])
+
+    for i in range(len(fqinjte_e_nyjes)):
+        for j in range(i + 1, len(fqinjte_e_nyjes)):
+            nyja1 = fqinjte_e_nyjes[i]
+            nyja2 = fqinjte_e_nyjes[j]
+
+            fqinjet[nyja1].add(nyja2)
+            fqinjet[nyja2].add(nyja1)
+
+
+    for fqinji in fqinjte_e_nyjes:
+        fqinjet[fqinji].discard(nyja)
+
+    fqinjet[nyja].clear()
+
+
 numri_nyjeve, brinjet = lexo_grafin("data/small.gr")
 fqinjet = krijo_fqinjet(numri_nyjeve, brinjet)
 
@@ -30,3 +48,9 @@ print("Numri i nyjeve:", numri_nyjeve)
 print("Numri i brinjëve:", len(brinjet))
 print("Tri brinjët e para:", brinjet[:3])
 print("Fqinjët e nyjës 0:", sorted(fqinjet[0]))
+
+graf_prove = [{1, 2}, {0}, {0}]
+
+elimino_nyjen(graf_prove, 0)
+
+print("Grafi pas heqjes së nyjës 0:", graf_prove)
