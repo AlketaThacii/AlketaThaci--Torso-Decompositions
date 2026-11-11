@@ -40,6 +40,20 @@ def elimino_nyjen(fqinjet, nyja):
 
     fqinjet[nyja].clear()
 
+def llogarit_gjeresine(fqinjet, renditja, t):
+    graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
+    gjeresia = 0
+
+    for pozita, nyja in enumerate(renditja):
+        shkalla = len(graf_pune[nyja])
+
+        if pozita >= t:
+            gjeresia = max(gjeresia, shkalla)
+
+        elimino_nyjen(graf_pune, nyja)
+
+    return gjeresia
+
 
 numri_nyjeve, brinjet = lexo_grafin("data/small.gr")
 fqinjet = krijo_fqinjet(numri_nyjeve, brinjet)
@@ -54,3 +68,21 @@ graf_prove = [{1, 2}, {0}, {0}]
 elimino_nyjen(graf_prove, 0)
 
 print("Grafi pas heqjes së nyjës 0:", graf_prove)
+
+graf_gjeresie = [
+    {1, 2},
+    {0},
+    {0, 3},
+    {2}
+]
+
+renditja_prove = [0, 1, 2, 3]
+t_prove = 1
+
+rezultati = llogarit_gjeresine(
+    graf_gjeresie,
+    renditja_prove,
+    t_prove
+)
+
+print("Gjerësia e grafit të provës:", rezultati)
