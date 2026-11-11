@@ -1,3 +1,4 @@
+import sys
 def lexo_grafin(rruga):
     brinjet = []
 
@@ -100,7 +101,17 @@ def krijo_renditje_min_shkalle(fqinjet):
 
     return renditja
 
-numri_nyjeve, brinjet = lexo_grafin("data/small.gr")
+skedaret = {
+    "small": "data/small.gr",
+    "medium": "data/medium.gr"
+}
+
+niveli = sys.argv[1] if len(sys.argv) > 1 else "small"
+numri_nyjeve, brinjet = lexo_grafin(skedaret[niveli])
+
+print("Grafi i zgjedhur:", niveli)
+
+
 fqinjet = krijo_fqinjet(numri_nyjeve, brinjet)
 
 print("Numri i nyjeve:", numri_nyjeve)
