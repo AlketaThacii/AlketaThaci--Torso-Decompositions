@@ -40,12 +40,16 @@ def elimino_nyjen(fqinjet, nyja):
 
     fqinjet[nyja].clear()
 
+
 def llogarit_gjeresine(fqinjet, renditja, t):
     graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
     gjeresia = 0
 
     for pozita, nyja in enumerate(renditja):
         shkalla = len(graf_pune[nyja])
+
+        if shkalla > 500:
+            return 501
 
         if pozita >= t:
             gjeresia = max(gjeresia, shkalla)
@@ -54,6 +58,22 @@ def llogarit_gjeresine(fqinjet, renditja, t):
 
     return gjeresia
 
+def krijo_renditje_min_shkalle(fqinjet):
+    graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
+    nyjet_mbetura = set(range(len(graf_pune)))
+    renditja = []
+
+    while nyjet_mbetura:
+        nyja = min(
+            nyjet_mbetura,
+            key=lambda n: (len(graf_pune[n]), n)
+        )
+
+        renditja.append(nyja)
+        elimino_nyjen(graf_pune, nyja)
+        nyjet_mbetura.remove(nyja)
+
+    return renditja
 
 numri_nyjeve, brinjet = lexo_grafin("data/small.gr")
 fqinjet = krijo_fqinjet(numri_nyjeve, brinjet)
@@ -86,3 +106,24 @@ rezultati = llogarit_gjeresine(
 )
 
 print("Gjerësia e grafit të provës:", rezultati)
+
+renditja_fillestare = list(range(numri_nyjeve))
+pragu = 0
+
+gjeresia_fillestare = llogarit_gjeresine(
+    fqinjet,
+    renditja_fillestare,
+    pragu
+)
+
+print("Gjerësia fillestare e Small:", gjeresia_fillestare)
+
+renditja_min = krijo_renditje_min_shkalle(fqinjet)
+
+gjeresia_min = llogarit_gjeresine(
+    fqinjet,
+    renditja_min,
+    pragu
+)
+
+print("Gjerësia me renditjen e re:", gjeresia_min)
