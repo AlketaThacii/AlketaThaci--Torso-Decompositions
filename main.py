@@ -58,6 +58,31 @@ def llogarit_gjeresine(fqinjet, renditja, t):
 
     return gjeresia
 
+def llogarit_te_gjitha_gjeresite(fqinjet, renditja):
+    graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
+    shkallet = []
+
+    for nyja in renditja:
+        shkalla = len(graf_pune[nyja])
+
+        if shkalla > 500:
+            return [501] * len(renditja)
+
+        shkallet.append(shkalla)
+        elimino_nyjen(graf_pune, nyja)
+
+    gjeresite = [0] * len(renditja)
+    gjeresia_me_e_madhe = 0
+
+    for pozita in range(len(renditja) - 1, -1, -1):
+        gjeresia_me_e_madhe = max(
+            gjeresia_me_e_madhe,
+            shkallet[pozita]
+        )
+        gjeresite[pozita] = gjeresia_me_e_madhe
+
+    return gjeresite
+
 def krijo_renditje_min_shkalle(fqinjet):
     graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
     nyjet_mbetura = set(range(len(graf_pune)))
@@ -127,3 +152,19 @@ gjeresia_min = llogarit_gjeresine(
 )
 
 print("Gjerësia me renditjen e re:", gjeresia_min)
+
+gjeresite = llogarit_te_gjitha_gjeresite(
+    fqinjet,
+    renditja_min
+)
+
+pikat_pareto = []
+gjeresia_me_e_mire = float("inf")
+
+for t, gjeresia in enumerate(gjeresite):
+    if gjeresia < gjeresia_me_e_mire:
+        pikat_pareto.append((t, numri_nyjeve - t, gjeresia))
+        gjeresia_me_e_mire = gjeresia
+
+print("Pikat (pragu, madhësia e torso-s, gjerësia):")
+print(pikat_pareto)
