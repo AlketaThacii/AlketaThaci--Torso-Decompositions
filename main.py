@@ -1,4 +1,7 @@
 import sys
+import json
+from pathlib import Path
+
 def lexo_grafin(rruga):
     brinjet = []
 
@@ -194,6 +197,28 @@ if len(pikat_pareto) > 20:
         pikat_pareto[i]
         for i in sorted(indekset)
     ]
-    
+
 print("Pikat (pragu, madhësia e torso-s, gjerësia):")
 print(pikat_pareto)
+
+decision_vectors = [
+    renditja_min + [t]
+    for t, madhesia, gjeresia in pikat_pareto
+]
+
+te_dhenat = [{
+    "decisionVector": decision_vectors,
+    "problem": f"{niveli}-graph",
+    "challenge": "spoc-3-torso-decompositions"
+}]
+
+folderi_rezultateve = Path("results")
+folderi_rezultateve.mkdir(exist_ok=True)
+
+skedari_json = folderi_rezultateve / f"{niveli}-submission.json"
+skedari_json.write_text(
+    json.dumps(te_dhenat, indent=2),
+    encoding="utf-8"
+)
+
+print("Zgjidhjet u ruajtën te:", skedari_json)
