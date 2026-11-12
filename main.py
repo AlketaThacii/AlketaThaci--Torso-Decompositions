@@ -94,7 +94,10 @@ def krijo_renditje_min_shkalle(fqinjet):
             nyjet_mbetura,
             key=lambda n: (len(graf_pune[n]), n)
         )
-
+        if len(graf_pune[nyja]) > 500:
+            renditja.extend(sorted(nyjet_mbetura))
+            break
+    
         renditja.append(nyja)
         elimino_nyjen(graf_pune, nyja)
         nyjet_mbetura.remove(nyja)
@@ -157,7 +160,7 @@ gjeresia_fillestare = llogarit_gjeresine(
     pragu
 )
 
-print("Gjerësia fillestare e Small:", gjeresia_fillestare)
+print(f"Gjerësia fillestare e {niveli}:", gjeresia_fillestare)
 
 renditja_min = krijo_renditje_min_shkalle(fqinjet)
 
@@ -167,7 +170,7 @@ gjeresia_min = llogarit_gjeresine(
     pragu
 )
 
-print("Gjerësia me renditjen e re:", gjeresia_min)
+print(f"Gjerësia me renditjen e re e {niveli}:", gjeresia_min)
 
 gjeresite = llogarit_te_gjitha_gjeresite(
     fqinjet,
@@ -182,5 +185,15 @@ for t, gjeresia in enumerate(gjeresite):
         pikat_pareto.append((t, numri_nyjeve - t, gjeresia))
         gjeresia_me_e_mire = gjeresia
 
+if len(pikat_pareto) > 20:
+    indekset = {
+        round(i * (len(pikat_pareto) - 1) / 19)
+        for i in range(20)
+    }
+    pikat_pareto = [
+        pikat_pareto[i]
+        for i in sorted(indekset)
+    ]
+    
 print("Pikat (pragu, madhësia e torso-s, gjerësia):")
 print(pikat_pareto)
