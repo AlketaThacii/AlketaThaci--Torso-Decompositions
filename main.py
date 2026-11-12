@@ -103,10 +103,15 @@ def krijo_renditje_min_shkalle(fqinjet):
 
 skedaret = {
     "small": "data/small.gr",
-    "medium": "data/medium.gr"
+    "medium": "data/medium.gr",
+    "large": "data/large.gr"
 }
 
 niveli = sys.argv[1] if len(sys.argv) > 1 else "small"
+
+if niveli not in skedaret:
+    raise SystemExit("Shkruaj: py main.py small, medium ose large")
+
 numri_nyjeve, brinjet = lexo_grafin(skedaret[niveli])
 
 print("Grafi i zgjedhur:", niveli)
