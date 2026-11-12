@@ -1,4 +1,5 @@
 import sys
+import random
 import json
 from pathlib import Path
 
@@ -87,20 +88,27 @@ def llogarit_te_gjitha_gjeresite(fqinjet, renditja):
 
     return gjeresite
 
-def krijo_renditje_min_shkalle(fqinjet):
+def krijo_renditje_min_shkalle(fqinjet, gjeneratori):
     graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
     nyjet_mbetura = set(range(len(graf_pune)))
     renditja = []
 
     while nyjet_mbetura:
-        nyja = min(
-            nyjet_mbetura,
-            key=lambda n: (len(graf_pune[n]), n)
+        shkalla_min = min(
+            len(graf_pune[n]) for n in nyjet_mbetura
         )
-        if len(graf_pune[nyja]) > 500:
+
+        kandidatet = [
+            n for n in nyjet_mbetura
+            if len(graf_pune[n]) == shkalla_min
+        ]
+
+        nyja = gjeneratori.choice(kandidatet)
+
+        if shkalla_min > 500:
             renditja.extend(sorted(nyjet_mbetura))
             break
-    
+
         renditja.append(nyja)
         elimino_nyjen(graf_pune, nyja)
         nyjet_mbetura.remove(nyja)
@@ -165,7 +173,27 @@ gjeresia_fillestare = llogarit_gjeresine(
 
 print(f"Gjerësia fillestare e {niveli}:", gjeresia_fillestare)
 
-renditja_min = krijo_renditje_min_shkalle(fqinjet)
+gjeneratori = random.Random(42)
+renditja_min = None
+gjeresia_min = 501
+
+for prove in range(10):
+    renditja_kandidate = krijo_renditje_min_shkalle(
+        fqinjet,
+        gjeneratori
+    )
+
+    gjeresia_kandidate = llogarit_gjeresine(
+        fqinjet,
+        renditja_kandidate,
+        0
+    )
+
+    print(f"Prova {prove + 1}: gjerësia {gjeresia_kandidate}")
+
+    if renditja_min is None or gjeresia_kandidate < gjeresia_min:
+        renditja_min = renditja_kandidate
+        gjeresia_min = gjeresia_kandidate
 
 gjeresia_min = llogarit_gjeresine(
     fqinjet,
