@@ -177,7 +177,7 @@ gjeneratori = random.Random(42)
 renditja_min = None
 gjeresia_min = 501
 
-for prove in range(10):
+for prove in range(30):
     renditja_kandidate = krijo_renditje_min_shkalle(
         fqinjet,
         gjeneratori
