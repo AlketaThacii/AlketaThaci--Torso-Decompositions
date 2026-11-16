@@ -97,6 +97,21 @@ def pika_dominon(pika1, pika2):
 
     return not_worse_in_either and strictly_better_in_one
 
+def shto_ne_frontin_pareto(front, threshold, width, order):
+    new_point = (threshold, width)
+
+    for old_threshold, old_width, old_order in front:
+        old_point = (old_threshold, old_width)
+
+        if old_point == new_point or pika_dominon(old_point, new_point):
+            return
+
+    front[:] = [
+        item for item in front
+        if not pika_dominon(new_point, (item[0], item[1]))
+    ]
+
+    front.append((threshold, width, order.copy()))
 
 def krijo_renditje_min_shkalle(fqinjet, gjeneratori):
     graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
