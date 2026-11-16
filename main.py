@@ -88,6 +88,16 @@ def llogarit_te_gjitha_gjeresite(fqinjet, renditja):
 
     return gjeresite
 
+def pika_dominon(pika1, pika2):
+    threshold1, width1 = pika1
+    threshold2, width2 = pika2
+
+    not_worse_in_either = threshold1 <= threshold2 and width1 <= width2
+    strictly_better_in_one = threshold1 < threshold2 or width1 < width2
+
+    return not_worse_in_either and strictly_better_in_one
+
+
 def krijo_renditje_min_shkalle(fqinjet, gjeneratori):
     graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
     nyjet_mbetura = set(range(len(graf_pune)))
