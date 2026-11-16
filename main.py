@@ -202,28 +202,37 @@ gjeneratori = random.Random(42)
 renditja_min = None
 gjeresia_min = 501
 
+pareto_zgjidhjet = []
+
 for prove in range(30):
     renditja_kandidate = krijo_renditje_min_shkalle(
         fqinjet,
         gjeneratori
     )
 
-    gjeresia_kandidate = llogarit_gjeresine(
+    gjeresite_kandidate = llogarit_te_gjitha_gjeresite(
         fqinjet,
-        renditja_kandidate,
-        0
+        renditja_kandidate
     )
 
+    gjeresia_kandidate = gjeresite_kandidate[0]
     print(f"Prova {prove + 1}: gjerësia {gjeresia_kandidate}")
 
     if renditja_min is None or gjeresia_kandidate < gjeresia_min:
         renditja_min = renditja_kandidate
         gjeresia_min = gjeresia_kandidate
 
-gjeresia_min = llogarit_gjeresine(
-    fqinjet,
-    renditja_min,
-    pragu
+    for threshold, width in enumerate(gjeresite_kandidate):
+        shto_ne_frontin_pareto(
+            pareto_zgjidhjet,
+            threshold,
+            width,
+            renditja_kandidate
+        )
+
+print(
+    "Pika të mbledhura nga të gjitha provat:",
+    len(pareto_zgjidhjet)
 )
 
 print(f"Gjerësia me renditjen e re e {niveli}:", gjeresia_min)
