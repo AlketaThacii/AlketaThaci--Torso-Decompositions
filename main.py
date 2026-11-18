@@ -237,36 +237,31 @@ print(
 
 print(f"Gjerësia me renditjen e re e {niveli}:", gjeresia_min)
 
-gjeresite = llogarit_te_gjitha_gjeresite(
-    fqinjet,
-    renditja_min
-)
+pareto_zgjidhjet.sort(key=lambda pika: (pika[0], pika[1]))
 
-pikat_pareto = []
-gjeresia_me_e_mire = float("inf")
-
-for t, gjeresia in enumerate(gjeresite):
-    if gjeresia < gjeresia_me_e_mire:
-        pikat_pareto.append((t, numri_nyjeve - t, gjeresia))
-        gjeresia_me_e_mire = gjeresia
-
-if len(pikat_pareto) > 20:
+if len(pareto_zgjidhjet) > 20:
     indekset = {
-        round(i * (len(pikat_pareto) - 1) / 19)
+        round(i * (len(pareto_zgjidhjet) - 1) / 19)
         for i in range(20)
     }
-    pikat_pareto = [
-        pikat_pareto[i]
+    pareto_zgjidhjet = [
+        pareto_zgjidhjet[i]
         for i in sorted(indekset)
     ]
+
+pikat_pareto = [
+    (threshold, numri_nyjeve - threshold, width)
+    for threshold, width, order in pareto_zgjidhjet
+]
 
 print("Pikat (pragu, madhësia e torso-s, gjerësia):")
 print(pikat_pareto)
 
 decision_vectors = [
-    renditja_min + [t]
-    for t, madhesia, gjeresia in pikat_pareto
+    order + [threshold]
+    for threshold, width, order in pareto_zgjidhjet
 ]
+
 
 te_dhenat = [{
     "decisionVector": decision_vectors,
