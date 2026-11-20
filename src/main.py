@@ -2,7 +2,7 @@ import sys
 import random
 import json
 from pathlib import Path
-from heuristics import minimum_fill
+from heuristics import minimum_fill, minimum_degree
 
 def lexo_grafin(rruga):
     brinjet = []
@@ -150,7 +150,7 @@ skedaret = {
 niveli = sys.argv[1] if len(sys.argv) > 1 else "small"
 
 if niveli not in skedaret:
-    raise SystemExit("Shkruaj: py main.py small, medium ose large")
+    raise SystemExit("Shkruaj: py src/main.py small, medium ose large")
 
 numri_nyjeve, brinjet = lexo_grafin(skedaret[niveli])
 
@@ -245,7 +245,7 @@ for prove in range(30):
     gjeresia_kandidate = gjeresite_kandidate[0]
     print(f"Minimum Fill, prova {prove + 1}: gjerësia {gjeresia_kandidate}")
 
-    if renditja_min is None or gjeresia_kandidate < gjeresia_min:
+    if gjeresia_kandidate < gjeresia_min:
         renditja_min = renditja_kandidate
         gjeresia_min = gjeresia_kandidate
 
@@ -256,6 +256,32 @@ for prove in range(30):
             width,
             renditja_kandidate
         )
+
+
+renditja_min_degree = minimum_degree(fqinjet)
+
+gjeresite_min_degree = llogarit_te_gjitha_gjeresite(
+    fqinjet,
+    renditja_min_degree
+)
+
+print(
+    "Minimum Degree, gjerësia:",
+    gjeresite_min_degree[0]
+)
+
+if gjeresite_min_degree[0] < gjeresia_min:
+    renditja_min = renditja_min_degree
+    gjeresia_min = gjeresite_min_degree[0]
+
+for threshold, width in enumerate(gjeresite_min_degree):
+    shto_ne_frontin_pareto(
+        pareto_zgjidhjet,
+        threshold,
+        width,
+        renditja_min_degree
+    )
+
 print(
     "Pika të mbledhura nga të gjitha provat:",
     len(pareto_zgjidhjet)

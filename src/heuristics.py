@@ -45,3 +45,35 @@ def minimum_fill(adjacency, seed=42):
         order.append(node)
 
     return order
+
+def minimum_degree(adjacency):
+    graph = [set(neighbors) for neighbors in adjacency]
+    remaining = set(range(len(graph)))
+    order = []
+
+    while remaining:
+        node = min(
+            remaining,
+            key=lambda current: (
+                len(graph[current] & remaining),
+                current
+            )
+        )
+
+        neighbors = list(graph[node] & remaining)
+
+        for i in range(len(neighbors)):
+            for j in range(i + 1, len(neighbors)):
+                left = neighbors[i]
+                right = neighbors[j]
+                graph[left].add(right)
+                graph[right].add(left)
+
+        for neighbor in neighbors:
+            graph[neighbor].discard(node)
+
+        graph[node].clear()
+        remaining.remove(node)
+        order.append(node)
+
+    return order
