@@ -2,18 +2,32 @@ from itertools import combinations
 from random import Random
 
 
-def minimum_fill(adjacency, seed=42):
-
+def minimum_fill(adjacency, seed=42, candidate_limit=8):
+    
     graph = [set(neighbors) for neighbors in adjacency]
     remaining = set(range(len(graph)))
     order = []
     rng = Random(seed)
 
     while remaining:
-        best_score = None
-        candidates = []
+        degrees = {
+            node: len(graph[node] & remaining)
+            for node in remaining
+        }
+        if min(degrees.values()) > 500:
+               order.extend(sorted(remaining))
+               break
 
-        for node in remaining:
+
+        candidates = sorted(
+            remaining,
+            key=lambda node: (degrees[node], node)
+        )[:candidate_limit]
+
+        best_fill = None
+        best_candidates = []
+
+        for node in candidates:
             neighbors = sorted(graph[node] & remaining)
 
             missing_edges = sum(
@@ -22,15 +36,13 @@ def minimum_fill(adjacency, seed=42):
                 if right not in graph[left]
             )
 
-            score = (missing_edges, len(neighbors))
+            if best_fill is None or missing_edges < best_fill:
+                best_fill = missing_edges
+                best_candidates = [node]
+            elif missing_edges == best_fill:
+                best_candidates.append(node)
 
-            if best_score is None or score < best_score:
-                best_score = score
-                candidates = [node]
-            elif score == best_score:
-                candidates.append(node)
-
-        node = rng.choice(sorted(candidates))
+        node = rng.choice(best_candidates)
         neighbors = list(graph[node] & remaining)
 
         for left, right in combinations(neighbors, 2):
@@ -52,12 +64,18 @@ def minimum_degree(adjacency):
     order = []
 
     while remaining:
+        degrees = {
+            current: len(graph[current] & remaining)
+            for current in remaining
+        }
+
+        if min(degrees.values()) > 500:
+            order.extend(sorted(remaining))
+            break
+
         node = min(
             remaining,
-            key=lambda current: (
-                len(graph[current] & remaining),
-                current
-            )
+            key=lambda current: (degrees[current], current)
         )
 
         neighbors = list(graph[node] & remaining)

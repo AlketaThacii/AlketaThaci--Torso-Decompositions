@@ -231,7 +231,13 @@ for prove in range(30):
             renditja_kandidate
         )
 
-for prove in range(30):
+numri_provave_min_fill = {
+    "small": 30,
+    "medium": 5,
+    "large": 1
+}[niveli]
+
+for prove in range(numri_provave_min_fill):
     renditja_kandidate = minimum_fill(
         fqinjet,
         seed=1000 + prove
