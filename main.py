@@ -262,6 +262,12 @@ decision_vectors = [
     for threshold, width, order in pareto_zgjidhjet
 ]
 
+assert len(decision_vectors) <= 20
+
+for vector in decision_vectors:
+    assert len(vector) == numri_nyjeve + 1
+    assert sorted(vector[:-1]) == list(range(numri_nyjeve))
+    assert 0 <= vector[-1] < numri_nyjeve
 
 te_dhenat = [{
     "decisionVector": decision_vectors,
