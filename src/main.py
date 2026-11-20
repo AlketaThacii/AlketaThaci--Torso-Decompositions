@@ -2,6 +2,7 @@ import sys
 import random
 import json
 from pathlib import Path
+from heuristics import minimum_fill
 
 def lexo_grafin(rruga):
     brinjet = []
@@ -230,6 +231,31 @@ for prove in range(30):
             renditja_kandidate
         )
 
+for prove in range(30):
+    renditja_kandidate = minimum_fill(
+        fqinjet,
+        seed=1000 + prove
+    )
+
+    gjeresite_kandidate = llogarit_te_gjitha_gjeresite(
+        fqinjet,
+        renditja_kandidate
+    )
+
+    gjeresia_kandidate = gjeresite_kandidate[0]
+    print(f"Minimum Fill, prova {prove + 1}: gjerësia {gjeresia_kandidate}")
+
+    if renditja_min is None or gjeresia_kandidate < gjeresia_min:
+        renditja_min = renditja_kandidate
+        gjeresia_min = gjeresia_kandidate
+
+    for threshold, width in enumerate(gjeresite_kandidate):
+        shto_ne_frontin_pareto(
+            pareto_zgjidhjet,
+            threshold,
+            width,
+            renditja_kandidate
+        )
 print(
     "Pika të mbledhura nga të gjitha provat:",
     len(pareto_zgjidhjet)
