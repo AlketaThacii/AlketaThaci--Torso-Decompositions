@@ -76,6 +76,13 @@ Analiza eksperimentale gjendet te `reports/results-analysis.md`. Ajo përmbledh 
 
 Skedarët JSON përmbajnë deri në 20 decision vectors. Secili vector përmban renditjen e nyjeve dhe pragun `t`. Programi kontrollon që renditja përmban secilën nyje një herë dhe që pragu është brenda kufijve.
 
+## Kontrollimi i rezultateve
+
+Pas gjenerimit të JSON-ve, kontrollo formatin dhe decision vectors me:
+
+```powershell
+py src/validate_results.py
+
 ## Kufizimet
 
 - Metodat janë heuristika dhe nuk garantojnë gjetjen e zgjidhjes optimale.
