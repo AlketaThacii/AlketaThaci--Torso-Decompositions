@@ -1,6 +1,8 @@
 import sys
 import random
 import json
+import csv
+import time
 from pathlib import Path
 from heuristics import minimum_fill, minimum_degree
 
@@ -204,7 +206,15 @@ renditja_min = None
 gjeresia_min = 501
 
 pareto_zgjidhjet = []
+rezultate_metodave = {
+    "Randomized Min-Degree": [],
+    "Bounded Min-Fill": [],
+    "Minimum Degree": []
+}
 
+koha_metodave = {}
+
+fillimi_kohes = time.perf_counter()
 for prove in range(30):
     renditja_kandidate = krijo_renditje_min_shkalle(
         fqinjet,
@@ -217,6 +227,9 @@ for prove in range(30):
     )
 
     gjeresia_kandidate = gjeresite_kandidate[0]
+    rezultate_metodave["Randomized Min-Degree"].append(
+        gjeresia_kandidate
+    )
     print(f"Prova {prove + 1}: gjerësia {gjeresia_kandidate}")
 
     if renditja_min is None or gjeresia_kandidate < gjeresia_min:
@@ -230,6 +243,10 @@ for prove in range(30):
             width,
             renditja_kandidate
         )
+        
+koha_metodave["Randomized Min-Degree"] = (
+    time.perf_counter() - fillimi_kohes
+)
 
 numri_provave_min_fill = {
     "small": 30,
@@ -237,6 +254,7 @@ numri_provave_min_fill = {
     "large": 1
 }[niveli]
 
+fillimi_kohes = time.perf_counter()
 for prove in range(numri_provave_min_fill):
     renditja_kandidate = minimum_fill(
         fqinjet,
@@ -249,6 +267,10 @@ for prove in range(numri_provave_min_fill):
     )
 
     gjeresia_kandidate = gjeresite_kandidate[0]
+    rezultate_metodave["Bounded Min-Fill"].append(
+        gjeresia_kandidate
+    )
+
     print(f"Minimum Fill, prova {prove + 1}: gjerësia {gjeresia_kandidate}")
 
     if gjeresia_kandidate < gjeresia_min:
@@ -262,7 +284,11 @@ for prove in range(numri_provave_min_fill):
             width,
             renditja_kandidate
         )
+koha_metodave["Bounded Min-Fill"] = (
+    time.perf_counter() - fillimi_kohes
+)
 
+fillimi_kohes = time.perf_counter()
 
 renditja_min_degree = minimum_degree(fqinjet)
 
@@ -287,6 +313,36 @@ for threshold, width in enumerate(gjeresite_min_degree):
         width,
         renditja_min_degree
     )
+rezultate_metodave["Minimum Degree"].append(
+    gjeresite_min_degree[0]
+)
+
+koha_metodave["Minimum Degree"] = (
+    time.perf_counter() - fillimi_kohes
+)
+skedari_csv = Path("results") / f"{niveli}-experiment.csv"
+
+with skedari_csv.open("w", newline="", encoding="utf-8") as file:
+    writer = csv.writer(file)
+
+    writer.writerow([
+        "method",
+        "number_of_trials",
+        "best_width_at_t0",
+        "average_width_at_t0",
+        "time_seconds"
+    ])
+
+    for method, widths in rezultate_metodave.items():
+        writer.writerow([
+            method,
+            len(widths),
+            min(widths),
+            round(sum(widths) / len(widths), 2),
+            round(koha_metodave[method], 3)
+        ])
+
+print("Matjet u ruajtën te:", skedari_csv)
 
 print(
     "Pika të mbledhura nga të gjitha provat:",
