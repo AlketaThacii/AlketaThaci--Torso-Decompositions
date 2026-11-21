@@ -35,6 +35,7 @@ Për grafın `medium`, Randomized Min-Degree gjeti gjerësinë minimale më të 
 Për grafın `large`, të tria metodat gjetën gjerësi 499, një pikë nën kufirin 500. Randomized Min-Degree mori kohën më të gjatë, sepse kreu 30 prova. Bounded Min-Fill dhe Minimum Degree provuan secila vetëm një renditje.
 
 Grafiku `heuristic-comparison.png` paraqet gjerësinë më të mirë dhe kohën totale për secilën metodë dhe graf.
+![Krahasimi i gjerësisë dhe kohës për tri metodat](heuristic-comparison.png)
 
 ## Kufizimet e krahasimit
 
