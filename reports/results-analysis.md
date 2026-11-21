@@ -53,3 +53,15 @@ Minimum Degree ishte më i shpejti në këto eksperimente, por u ekzekutua vetë
 Rezultatet janë heuristike. Numri i provave ndryshoi mes metodave dhe analiza e tabelës mat vetëm gjerësinë për `t = 0`. Për krahasim më të drejtë në të ardhmen, metodat mund të ekzekutohen me të njëjtin kufi kohor. Zgjidhjet për pragje të ndryshme ruhen në JSON dhe paraqesin kompromisin mes objektivave të sfidës.
 
 Si punë e ardhshme, mund të përmirësohet Bounded Min-Fill, të krahasohen metodat me buxhet të barabartë kohor dhe të kontrollohen decision vectors me vlerësuesin zyrtar të sfidës.
+
+## Kontrollimi i skedarëve të dorëzimit
+
+U ekzekutua kontrolluesi lokal me komandën `py src/validate_results.py`. Të tre skedarët JSON kaluan kontrollin strukturor:
+
+| Skedari | Zgjidhje | Nyje |
+|---|---:|---:|
+| small-submission.json | 20 | 1357 |
+| medium-submission.json | 20 | 1399 |
+| large-submission.json | 20 | 2426 |
+
+Kontrolluesi verifikoi formatin e JSON-it, emrat e sfidës dhe problemeve, numrin maksimal të zgjidhjeve, renditjen e nyjeve dhe kufijtë e pragut `t`. Ky është kontroll strukturor lokal; nuk është vlerësim nga platforma zyrtare e ESA-s.
