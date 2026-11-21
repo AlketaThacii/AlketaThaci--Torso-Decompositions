@@ -43,3 +43,13 @@ Metodat nuk kryen të njëjtin numër provash për çdo graf. Prandaj koha total
 Bounded Min-Fill kontrollon vetëm tetë kandidatë me shkallën më të vogël, për të kufizuar kohën e llogaritjes. Kjo e bën metodën më të shpejtë se kontrollimi i të gjitha nyjeve, por mund ta pengojë të gjejë renditjen më të mirë.
 
 Kjo tabelë krahason vetëm rezultatet për `t = 0`. Skedarët JSON përmbajnë zgjidhjet e përzgjedhura për pragje të ndryshme, të cilat paraqesin kompromisin mes dy objektivave të problemit.
+
+## Përfundim
+
+Eksperimentet tregojnë se asnjë metodë nuk është më e mira për të gjithë grafikët. Për `small`, të tria metodat gjetën gjerësi minimale 20. Për `medium`, Randomized Min-Degree gjeti rezultatin më të ulët, 272. Për `large`, të gjitha metodat gjetën 499, brenda kufirit 500 të vlerësuesit.
+
+Minimum Degree ishte më i shpejti në këto eksperimente, por u ekzekutua vetëm një herë për çdo graf. Randomized Min-Degree përdori 30 prova dhe pati më shumë mundësi të gjente renditje të mira. Bounded Min-Fill mori më shumë kohë për provë, sidomos te `small`.
+
+Rezultatet janë heuristike. Numri i provave ndryshoi mes metodave dhe analiza e tabelës mat vetëm gjerësinë për `t = 0`. Për krahasim më të drejtë në të ardhmen, metodat mund të ekzekutohen me të njëjtin kufi kohor. Zgjidhjet për pragje të ndryshme ruhen në JSON dhe paraqesin kompromisin mes objektivave të sfidës.
+
+Si punë e ardhshme, mund të përmirësohet Bounded Min-Fill, të krahasohen metodat me buxhet të barabartë kohor dhe të kontrollohen decision vectors me vlerësuesin zyrtar të sfidës.
