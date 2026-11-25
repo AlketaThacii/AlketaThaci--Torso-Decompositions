@@ -5,22 +5,9 @@ import csv
 import time
 from pathlib import Path
 from heuristics import minimum_fill, minimum_degree
+from graph import lexo_grafin
 
-def lexo_grafin(rruga):
-    brinjet = []
 
-    with open(rruga, "r", encoding="utf-8") as skedari:
-        for rreshti in skedari:
-            numrat = rreshti.split()
-
-            if len(numrat) == 2:
-                nyja1 = int(numrat[0])
-                nyja2 = int(numrat[1])
-                brinjet.append((nyja1, nyja2))
-
-    numri_nyjeve = max(max(brinja) for brinja in brinjet) + 1
-
-    return numri_nyjeve, brinjet
 
 def krijo_fqinjet(numri_nyjeve, brinjet):
     fqinjet = [set() for _ in range(numri_nyjeve)]
@@ -243,7 +230,7 @@ for prove in range(30):
             width,
             renditja_kandidate
         )
-        
+
 koha_metodave["Randomized Min-Degree"] = (
     time.perf_counter() - fillimi_kohes
 )
