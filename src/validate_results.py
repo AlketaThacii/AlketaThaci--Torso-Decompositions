@@ -1,5 +1,7 @@
 import json
 from pathlib import Path
+from graph import lexo_grafin
+from elimination import krijo_fqinjet, llogarit_gjeresite
 
 
 PROJECT_FOLDER = Path(__file__).resolve().parent.parent
@@ -36,7 +38,9 @@ def validate_dataset(dataset):
     if not json_file.exists():
         raise FileNotFoundError(f"Mungon rezultati: {json_file}")
 
-    number_of_nodes = get_number_of_nodes(graph_file)
+    
+    number_of_nodes, edges = lexo_grafin(graph_file)
+    adjacency = krijo_fqinjet(number_of_nodes, edges)
 
     with json_file.open("r", encoding="utf-8") as file:
         content = json.load(file)
@@ -99,6 +103,14 @@ def validate_dataset(dataset):
         if not 0 <= threshold < number_of_nodes:
             raise ValueError(
                 f"Zgjidhja {index}: pragu t është jashtë kufijve."
+            )
+        widths = llogarit_gjeresite(adjacency, order)
+        actual_width = widths[threshold]
+
+        if actual_width > 500:
+            raise ValueError(
+                f"Zgjidhja {index}: gjerësia {actual_width} "
+                "e tejkalon kufirin 500 të evaluatorit."
             )
 
     print(

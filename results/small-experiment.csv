@@ -1,4 +1,4 @@
 method,number_of_trials,best_width_at_t0,average_width_at_t0,time_seconds
-Randomized Min-Degree,30,20,21.37,4.693
-Bounded Min-Fill,30,20,20.57,26.743
-Minimum Degree,1,20,20.0,0.597
+Randomized Min-Degree,30,20,21.37,5.028
+Bounded Min-Fill,30,20,20.57,29.269
+Minimum Degree,1,20,20.0,0.039

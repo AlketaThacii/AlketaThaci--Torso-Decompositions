@@ -12,6 +12,7 @@ from elimination import (
     llogarit_gjeresine,
     llogarit_gjeresite as llogarit_te_gjitha_gjeresite
 )
+from pareto import zgjedh_zgjidhjet_hypervolume
 
 
 def pika_dominon(pika1, pika2):
@@ -270,17 +271,11 @@ print(
 
 print(f"Gjerësia me renditjen e re e {niveli}:", gjeresia_min)
 
-pareto_zgjidhjet.sort(key=lambda pika: (pika[0], pika[1]))
-
-if len(pareto_zgjidhjet) > 20:
-    indekset = {
-        round(i * (len(pareto_zgjidhjet) - 1) / 19)
-        for i in range(20)
-    }
-    pareto_zgjidhjet = [
-        pareto_zgjidhjet[i]
-        for i in sorted(indekset)
-    ]
+pareto_zgjidhjet = zgjedh_zgjidhjet_hypervolume(
+    pareto_zgjidhjet,
+    numri_nyjeve,
+    kufiri=20
+)
 
 pikat_pareto = [
     (threshold, numri_nyjeve - threshold, width)
