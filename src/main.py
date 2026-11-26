@@ -6,77 +6,13 @@ import time
 from pathlib import Path
 from heuristics import minimum_fill, minimum_degree
 from graph import lexo_grafin
+from elimination import (
+    krijo_fqinjet,
+    elimino_nyjen,
+    llogarit_gjeresine,
+    llogarit_gjeresite as llogarit_te_gjitha_gjeresite
+)
 
-
-
-def krijo_fqinjet(numri_nyjeve, brinjet):
-    fqinjet = [set() for _ in range(numri_nyjeve)]
-
-    for nyja1, nyja2 in brinjet:
-        fqinjet[nyja1].add(nyja2)
-        fqinjet[nyja2].add(nyja1)
-
-    return fqinjet
-
-def elimino_nyjen(fqinjet, nyja):
-    fqinjte_e_nyjes = list(fqinjet[nyja])
-
-    for i in range(len(fqinjte_e_nyjes)):
-        for j in range(i + 1, len(fqinjte_e_nyjes)):
-            nyja1 = fqinjte_e_nyjes[i]
-            nyja2 = fqinjte_e_nyjes[j]
-
-            fqinjet[nyja1].add(nyja2)
-            fqinjet[nyja2].add(nyja1)
-
-
-    for fqinji in fqinjte_e_nyjes:
-        fqinjet[fqinji].discard(nyja)
-
-    fqinjet[nyja].clear()
-
-
-def llogarit_gjeresine(fqinjet, renditja, t):
-    graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
-    gjeresia = 0
-
-    for pozita, nyja in enumerate(renditja):
-        shkalla = len(graf_pune[nyja])
-
-        if shkalla > 500:
-            return 501
-
-        if pozita >= t:
-            gjeresia = max(gjeresia, shkalla)
-
-        elimino_nyjen(graf_pune, nyja)
-
-    return gjeresia
-
-def llogarit_te_gjitha_gjeresite(fqinjet, renditja):
-    graf_pune = [set(fqinjet_e_nyjes) for fqinjet_e_nyjes in fqinjet]
-    shkallet = []
-
-    for nyja in renditja:
-        shkalla = len(graf_pune[nyja])
-
-        if shkalla > 500:
-            return [501] * len(renditja)
-
-        shkallet.append(shkalla)
-        elimino_nyjen(graf_pune, nyja)
-
-    gjeresite = [0] * len(renditja)
-    gjeresia_me_e_madhe = 0
-
-    for pozita in range(len(renditja) - 1, -1, -1):
-        gjeresia_me_e_madhe = max(
-            gjeresia_me_e_madhe,
-            shkallet[pozita]
-        )
-        gjeresite[pozita] = gjeresia_me_e_madhe
-
-    return gjeresite
 
 def pika_dominon(pika1, pika2):
     threshold1, width1 = pika1
