@@ -1,6 +1,6 @@
 from itertools import combinations
 from random import Random
-
+import heapq
 
 def minimum_fill(adjacency, seed=42, candidate_limit=8):
     
@@ -14,9 +14,6 @@ def minimum_fill(adjacency, seed=42, candidate_limit=8):
             node: len(graph[node] & remaining)
             for node in remaining
         }
-        if min(degrees.values()) > 500:
-               order.extend(sorted(remaining))
-               break
 
 
         candidates = sorted(
@@ -58,25 +55,33 @@ def minimum_fill(adjacency, seed=42, candidate_limit=8):
 
     return order
 
+
+
 def minimum_degree(adjacency):
     graph = [set(neighbors) for neighbors in adjacency]
     remaining = set(range(len(graph)))
     order = []
 
+    heap = [
+        (len(graph[node]), node)
+        for node in remaining
+    ]
+    heapq.heapify(heap)
+
     while remaining:
-        degrees = {
-            current: len(graph[current] & remaining)
-            for current in remaining
-        }
+        while heap:
+            degree, node = heapq.heappop(heap)
 
-        if min(degrees.values()) > 500:
-            order.extend(sorted(remaining))
+            if node not in remaining:
+                continue
+
+            current_degree = len(graph[node] & remaining)
+
+            if degree == current_degree:
+                break
+
+        else:
             break
-
-        node = min(
-            remaining,
-            key=lambda current: (degrees[current], current)
-        )
 
         neighbors = list(graph[node] & remaining)
 
@@ -84,6 +89,7 @@ def minimum_degree(adjacency):
             for j in range(i + 1, len(neighbors)):
                 left = neighbors[i]
                 right = neighbors[j]
+
                 graph[left].add(right)
                 graph[right].add(left)
 
@@ -93,5 +99,9 @@ def minimum_degree(adjacency):
         graph[node].clear()
         remaining.remove(node)
         order.append(node)
+
+        for neighbor in neighbors:
+            new_degree = len(graph[neighbor] & remaining)
+            heapq.heappush(heap, (new_degree, neighbor))
 
     return order

@@ -56,10 +56,6 @@ def krijo_renditje_min_shkalle(fqinjet, gjeneratori):
 
         nyja = gjeneratori.choice(kandidatet)
 
-        if shkalla_min > 500:
-            renditja.extend(sorted(nyjet_mbetura))
-            break
-
         renditja.append(nyja)
         elimino_nyjen(graf_pune, nyja)
         nyjet_mbetura.remove(nyja)
